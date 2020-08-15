@@ -84,25 +84,29 @@ const Jackpot = (props) => {
 
     const onRoundSubmitHandler = (e) => {
         e.preventDefault()
-        let arr_skore_input = document.getElementsByName("skore_input")
+        let currentRound = gameRound + 1
+        setGameRound(currentRound)
+        let arr_skore_input = document.getElementsByClassName("current_skore_input")
+        console.log(arr_skore_input.length)
         for(let x=0;x<arr_skore_input.length; x++){
-            //console.log(arr_skore_input[x].value)
+            //console.log("run", x, "game state before mod", gameState)
             if(parseInt(arr_skore_input[x].value)){
                 const player = {
                     ...gameState[x]
                 }
-                console.log(player)
+                //console.log("player to be modded ", player)
                 let originalSkore = player.skore
-                console.log(originalSkore)
+                //console.log(" existing score ", originalSkore)
                 originalSkore += parseInt(arr_skore_input[x].value)
                 player.skore = originalSkore
                 const players = [...gameState]
+                //console.log(players)
                 players[x] = player
                 setGameState(players)
 
             }
         }
-        console.log(gameState)
+        //console.log(gameState)
     }
 
 
@@ -130,7 +134,7 @@ const Jackpot = (props) => {
                 :
                 <button value="set" onClick={gangFlagHandler} className="game_flag_button" >set</button>
                 }
-                <button className="game-button jack" onClick={beginJackpotHandler}>START</button>
+                <button className="game-button" onClick={beginJackpotHandler}>START</button>
             </div>
          
         )
@@ -160,7 +164,7 @@ const Jackpot = (props) => {
                                     )
                                 })
                             }
-                            <button className="game-button jack" type="submit">NEXT</button>
+                            <button className="game-button" type="submit">NEXT</button>
                             </form>
                             
                         </div>
@@ -195,7 +199,7 @@ const Jackpot = (props) => {
                                     }
                                 })
                             }
-                            <button className="game-button jack" type="submit">NEXT</button>
+                            <button className="game-button" type="submit">NEXT</button>
                             </form>
                             
                         </div>
