@@ -1,0 +1,11 @@
+h3{
+    color: #f28fc7;
+    font-size: 30px;
+}
+.game{
+    margin: 0;
+    padding: 0;
+}
+.game > h5{
+    color: azure;
+}

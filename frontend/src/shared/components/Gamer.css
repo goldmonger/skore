@@ -1,0 +1,48 @@
+.gamer_name {
+    color: azure;
+    width: 130px;
+}
+
+.game_list_item {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    
+}
+.game_list_item_div {
+    display: flex;
+    width: 330px;
+    border-top: #e3c43b 1px solid;
+}
+.game_list_item_div:last-child {
+    border-bottom: #e3c43b 1px solid;
+}
+
+.cumulative_skore {
+    color: #e3c43b;
+    position: relative;
+    top: 10px;
+    left: 15px;
+    width: 50px;
+
+}
+.approval_icon{
+    width: 60px;
+    height: 46px;
+    position: relative;
+    top: 27px;
+    left: 20px;
+    float: right;
+  
+    
+}
+.current_skore_input{
+    float: right;
+    position: relative;
+    
+    top: 28px;
+    left: 20px;
+    width: 40px;
+    height: 30px;
+    font-size: 22px;
+}
