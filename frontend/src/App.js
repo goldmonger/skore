@@ -4,7 +4,6 @@ import logo from './logo.svg';
 import './App.css';
 import Ss7 from './game/ss7/Ss7';
 import Jackpot from './game/jackpot/Jackpot';
-import Solo from './game/solo/Solo';
 import Signature from './Signature/Signature';
 import JackpotPlayers from './game/jackpot/JackpotPlayers';
 import Version from './Version/Version'
