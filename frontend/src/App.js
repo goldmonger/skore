@@ -54,7 +54,7 @@ const App = () => {
                 <sup><sup><Signature /></sup></sup>
               </div>             </header>
           </div>
-          <Solo />
+          
           
         </Route>
 
