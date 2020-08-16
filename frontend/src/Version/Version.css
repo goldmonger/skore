@@ -1,6 +1,7 @@
 .version{
     color: #666666;
-    position: fixed;
+    position: relative;
+    left: 0;
     margin-left: 10px;
     bottom: 0;
     font-size: 16px;

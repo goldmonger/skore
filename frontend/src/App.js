@@ -47,12 +47,13 @@ const App = () => {
         <Route path="/game/so-lo" exact>
           <div className="App">
             <header className="App-header">
-            <div className="skore">
+              <div className="skore">
                 <span className="logo_skore" id="sk">sk</span>
                   <img src={logo} className="App-logo" alt="logo" />
                 <span className="logo_skore" id="re">re</span>
                 <sup><sup><Signature /></sup></sup>
-              </div>             </header>
+              </div>             
+            </header>
           </div>
           
           
@@ -74,11 +75,12 @@ const App = () => {
               <ul className="players_list">
                 <Link to='/game/ss7'><li id="ss7_li_main">super cyka 7</li></Link>
                 <Link to='/game/jackpot'><li id="jackpot_li_main">jackpot</li></Link>
+                <Link to='/'><li id="solo_li_main">f</li></Link>
                 
               </ul>
             </div>
             <div style={{color: '#888888'}} id="disclaimer">
-              <code>Nothing belongs to <span style={{color: '#e3c43b'}}>poisoncandy</span> and its <span style={{color: '#f28fc7'}}>designer</span>, all components belong to <span style={{color: '#61dafb'}}>Facebook.</span></code>
+              <code>Nothing belongs to <span style={{color: '#e3c43b'}}>poisoncandy</span> and its <span style={{color: '#f28fc7'}}>designer</span>, all components belong to <span style={{color: '#61dafb'}}>facebook.</span></code>
             </div>
           </div>
           <Version />

@@ -84,6 +84,7 @@ const Jackpot = (props) => {
 
     const onRoundSubmitHandler = (e) => {
         e.preventDefault()
+        
         let currentRound = gameRound + 1
         setGameRound(currentRound)
         let arr_skore_input = document.getElementsByClassName("current_skore_input")

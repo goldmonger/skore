@@ -15,8 +15,9 @@ const Gamer = props => {
                 className="current_skore_input"
                 id={props.id} 
                 name="skore_input"
-                defaultValue={0}
+                defaultValue={""}
                 pattern="\d*"
+                //onfocus clear input using refs somehow
                 //onChange={props.changed}//display gray icon here
                 //idk when but when the players approve the skore we make their icon go green sync
                 />
