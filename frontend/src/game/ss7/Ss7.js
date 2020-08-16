@@ -31,7 +31,7 @@ const Ss7 = () => {
                     <form onSubmit={beginSs7}>
                     <PlayersList player_items={PLAYERS}/>
                     <button 
-                    className="game-button jack"
+                    className="game-button"
                     type="submit"
                     >
                     START

@@ -102,7 +102,7 @@ const Ss7R = props => {
                 <Gamer id={gameState[0].id} name={gameState[0].name} skore={gameState[0].skore}  />
                 <Gamer id={gameState[1].id} name={gameState[1].name} skore={gameState[1].skore}  />
                 <Gamer id={gameState[2].id} name={gameState[2].name} skore={gameState[2].skore}  />
-            <button type="submit" className="game-button jack" ><b>NEXT</b></button>
+            <button type="submit" className="game-button" ><b>NEXT</b></button>
             </form>
 
         }

@@ -70,22 +70,24 @@ const App = () => {
               </div>   
               <code id="llm_original">Long Live Mark</code>
             </header>
-            <div className="game_container">
+            <div className="game-container">
               <h2 className='skore_title'> Pick a game</h2>
               <ul className="players_list">
                 <Link to='/game/ss7'><li id="ss7_li_main">super cyka 7</li></Link>
                 <Link to='/game/jackpot'><li id="jackpot_li_main">jackpot</li></Link>
-                <Link to='/game/so-lo'><li id="solo_li_main">solo</li></Link>
-                {/* solo needs end button inf going on and save option to save game with player(s) */}
+                
               </ul>
             </div>
-            
+            <div style={{color: '#888888'}} id="disclaimer">
+              <code>Nothing belongs to <span style={{color: '#e3c43b'}}>poisoncandy</span> and its <span style={{color: '#f28fc7'}}>designer</span>, all components belong to <span style={{color: '#61dafb'}}>Facebook.</span></code>
+            </div>
           </div>
+          <Version />
         </Route>
 
         <Redirect to='/' />
       </Switch>
-      <Version />
+      
     </Router>
     
   );
