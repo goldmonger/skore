@@ -1,0 +1,10 @@
+.version{
+    color: #666666;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    margin-left: 10px;
+    margin-top: 20px;
+    font: normal;
+    font-size: 16px;
+}

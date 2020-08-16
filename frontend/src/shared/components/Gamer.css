@@ -11,6 +11,8 @@
 }
 .game_list_item_div {
     display: flex;
+    margin: 0;
+    padding: 0;
     width: 330px;
     border-top: #e3c43b 1px solid;
 }

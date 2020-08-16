@@ -7,7 +7,7 @@ import Jackpot from './game/jackpot/Jackpot';
 import Solo from './game/solo/Solo';
 import Signature from './Signature/Signature';
 import JackpotPlayers from './game/jackpot/JackpotPlayers';
-
+import Version from './Version/Version'
 
 
 const App = () => {
@@ -16,6 +16,7 @@ const App = () => {
   return (
 
     <Router>
+    
       <Switch>
         <Route path="/game/ss7" exact>
           <div className="App">
@@ -84,7 +85,7 @@ const App = () => {
 
         <Redirect to='/' />
       </Switch>
-
+      <Version />
     </Router>
     
   );
