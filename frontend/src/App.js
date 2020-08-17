@@ -69,6 +69,7 @@ const App = () => {
                 <sup><sup><Signature /></sup></sup>
               </div>   
               <code id="llm_original">Long Live Mark</code>
+              <Version />
             </header>
             <div className="game-container">
               <h2 className='skore_title'> Pick a game</h2>
@@ -78,12 +79,13 @@ const App = () => {
                 <Link to='/'><li id="solo_li_main">f</li></Link>
                 
               </ul>
+              <div style={{color: '#888888'}} id="disclaimer">
+              <code>Nothing belongs to <span style={{color: '#e3c43b'}}>poisoncandy</span> and its <br /><span style={{color: '#f28fc7'}}>designer</span>, all components belong to <br /><span style={{color: '#61dafb'}}>facebook.</span></code>
             </div>
-            <div style={{color: '#888888'}} id="disclaimer">
-              <code>Nothing belongs to <span style={{color: '#e3c43b'}}>poisoncandy</span> and its <span style={{color: '#f28fc7'}}>designer</span>, all components belong to <span style={{color: '#61dafb'}}>facebook.</span></code>
             </div>
+            
           </div>
-          <Version />
+          
         </Route>
 
         <Redirect to='/' />
