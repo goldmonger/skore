@@ -11,8 +11,7 @@ const Jackpot = (props) => {
     const [ gameRound, setGameRound ] = useState(1)
     const [ gameState, setGameState ] = useState(props.all_players)
     const [ playing, setPlaying ] = useState(null)
-    const [ getPlayers, setGetPlayers ] = useState(null)
-    const [ nextId, setNextId ] = useState('p'+String(1))
+
 
     const newPlayerNameInputRef = useRef(null)
 
@@ -29,10 +28,24 @@ const Jackpot = (props) => {
         setStakes(e.target.value)
     }
 
-    const newGameGenerateHandler = (e) => {
+    const newGameGenerateHandler = async (e) => {
         e.preventDefault()
-        // TAKE THE PLAYING ARRAY AND GENERATE THE TABLE FOR THEM
-        // EACH SUBMIT FROM TABLE SEND TO BACK END
+        //setConfig(false)
+        //send the array of players to backend
+        //then the backend has to return a json object for game state initialised to 0
+        //then we need to set this as game state for round 1
+        const response = await fetch('http://localhost:5000/game/jackpot', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                playerNames: playing
+            })
+        })
+        const responseData = await response.json()
+        console.log(responseData)
+        setGameState(responseData)
         setConfig(false)
 
       
@@ -57,10 +70,9 @@ const Jackpot = (props) => {
 
     const onRoundSubmitHandler = (e) => {
         e.preventDefault()
-        //send http post req 
-        //expect an array of skores to be returned
-        // for all playing map skores in state here
-        // check out redux once properly maybe it can help
+        //send http post req with current game state and the current skores
+        //expect a new game state object to be returned
+        // and update this object as the game state
         let currentRound = gameRound + 1
         setGameRound(currentRound)
         let arr_skore_input = document.getElementsByClassName("current_skore_input")
@@ -94,7 +106,7 @@ const Jackpot = (props) => {
 
 
 
-
+    let dynGameState = []
     if(config){
         const style = {
             color: '#e3c43b'
@@ -147,6 +159,7 @@ const Jackpot = (props) => {
             const housefull = {
                 color: '#666666'
             }
+            setGameState(props.all_players)
             return (
                 //full team block render
                 <div className="game-container">
@@ -179,38 +192,43 @@ const Jackpot = (props) => {
             )
         }
         else{
-            return (
-                <div className="game-container">
-                    <div className="game">
-                    <h3>Jackpot {stakes}</h3>
-                    <h5>game {gameRound}</h5>
-                        <div className="game-container">
-                        <form onSubmit={onRoundSubmitHandler}>
-                            {
-                                playing.map((player, index) => {
-                                    return (
-                                        <Gamer 
-                                        key={player+index}
-                                        id={player+index} 
-                                        name={player} 
-                                        skore={0} 
-                                        />
-                                    )
-                                })
-                            }
-                            <button className="game-button" type="submit">NEXT</button>
-                        </form>
+            if(playing !== null){
+                return (
+                    //dynamic team block render
+                    <div className="game-container">
+                        <div className="game">
+                        <h3>Jackpot {stakes}</h3>
+                        <h5>game {gameRound}</h5>
+                            <div className="game-container">
+                            <form onSubmit={onRoundSubmitHandler}>
+                                {
+                                    playing.map((player, index) => {
+                                        return (
+                                            <Gamer 
+                                            key={player+index}
+                                            id={player+index} 
+                                            name={player} 
+                                            skore={gameState[index].skore} 
+                                            />
+                                        )
+                                    })
+                                }
+                                <button className="game-button" type="submit">NEXT</button>
+                            </form>
+                                
+                            </div>
                             
                         </div>
-                        
                     </div>
-                </div>
-                
-            )
+                    
+                )
+            }
+            
         }
+        //setGameState(dynGameState)
         
     }
     
-};
+}
 
 export default Jackpot;

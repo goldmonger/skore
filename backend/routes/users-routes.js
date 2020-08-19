@@ -33,6 +33,7 @@ const BABY_PLAYERS = [
 
 
 router.get('/:uid', (req, res, next) => {
+    console.log('GET request 1 in place for users')
     const playerId = req.params.uid
     const player = BABY_PLAYERS.find(p => {
         return p.id === playerId
@@ -43,6 +44,7 @@ router.get('/:uid', (req, res, next) => {
     else{
         res.json({player: player})
     }
+    next()
     
 })
 router.get('/', (req, res, next) => {

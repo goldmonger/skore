@@ -7,8 +7,6 @@ const JackpotPlayers = [
     {name: "clem", id: "j4", skore: 0},
     {name: "babykris", id: "j5", skore: 0}
 ]
-//give an option since we played with this gang last time for a big game 
-//if full gang is playing display till 5
-//else till 3
+
 
 export default JackpotPlayers
