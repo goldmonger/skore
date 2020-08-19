@@ -34,7 +34,8 @@ const Jackpot = (props) => {
         //send the array of players to backend
         //then the backend has to return a json object for game state initialised to 0
         //then we need to set this as game state for round 1
-        const response = await fetch('http://localhost:5000/game/jackpot/init', {
+        //alert("sending the fetch")
+        const response = await fetch('http://192.168.1.16:5000/game/jackpot/init', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
