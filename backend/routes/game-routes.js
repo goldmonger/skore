@@ -3,8 +3,8 @@ const express = require('express')
 const router = express.Router()
 
 
-router.post('/jackpot', (req, res, next) => {
-    console.log('GET request 1 in place for jackpot')
+router.post('/jackpot/init', (req, res, next) => {
+    console.log('GET request 1 in place for jackpot init')
     console.log(req.body.playerNames)
     const gameState = []
     req.body.playerNames.map((playerName, index) => {
@@ -20,6 +20,17 @@ router.post('/jackpot', (req, res, next) => {
 })
 router.post('/jackpot/round', (req, res, next) => {
     console.log('GET request 1 in place for jackpot round')
+    console.log(req.body)
+    let updatedSkores = []
+    for (let x=0; x< req.body.curSkores.length; x++){
+        updatedSkores.push(parseInt(req.body.skores[x]) + parseInt(req.body.curSkores[x]))
+    }
+    let newJsonObj = {
+        playerNames: req.body.playerNames,
+        playerIds: req.body.playerIds,
+        skores: updatedSkores
+    }
+    res.json(newJsonObj)
     next()
 })
 

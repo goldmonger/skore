@@ -34,7 +34,7 @@ const Jackpot = (props) => {
         //send the array of players to backend
         //then the backend has to return a json object for game state initialised to 0
         //then we need to set this as game state for round 1
-        const response = await fetch('http://localhost:5000/game/jackpot', {
+        const response = await fetch('http://localhost:5000/game/jackpot/init', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -68,34 +68,58 @@ const Jackpot = (props) => {
     }
     
 
-    const onRoundSubmitHandler = (e) => {
+    const onRoundSubmitHandler = async (e) => {
         e.preventDefault()
         //send http post req with current game state and the current skores
         //expect a new game state object to be returned
         // and update this object as the game state
-        let currentRound = gameRound + 1
-        setGameRound(currentRound)
-        let arr_skore_input = document.getElementsByClassName("current_skore_input")
-        console.log(arr_skore_input.length)
-        for(let x=0;x<arr_skore_input.length; x++){
-            //console.log("run", x, "game state before mod", gameState)
-            if(parseInt(arr_skore_input[x].value)){
-                const player = {
-                    ...gameState[x]
-                }
-                //console.log("player to be modded ", player)
-                let originalSkore = player.skore
-                //console.log(" existing score ", originalSkore)
-                originalSkore += parseInt(arr_skore_input[x].value)
-                player.skore = originalSkore
-                const players = [...gameState]
-                //console.log(players)
-                players[x] = player
-                setGameState(players)
-
-            }
+        let inputs = document.getElementsByName('skore_input')
+        let curSkores = []
+        for(let s=0; s< inputs.length; s++){
+            curSkores.push(inputs[s].value)
         }
-        //console.log(gameState)
+        //console.log(curSkores)
+        let skores = []
+        let playerNames = []
+        let playerIds = []
+        gameState.map(player => {
+            skores.push(player.skore)
+            playerNames.push(player.name)
+            playerIds.push(player.id)
+
+
+        })
+        let newGameObj = {
+            playerNames: playerNames,
+            playerIds: playerIds,
+            skores: skores,
+            round: gameRound,
+            curSkores: curSkores
+        }
+
+        
+        const response = await fetch('http://localhost:5000/game/jackpot/round', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newGameObj)
+        })
+        const responseData = await response.json()
+        console.log(responseData)
+        let newGameState = []
+        responseData.playerNames.map((player, index) => {
+            let updatedPlayer = {
+                name: player,
+                id: responseData.playerIds[index],
+                skore: responseData.skores[index]
+            }
+            newGameState.push(updatedPlayer)
+        })
+        let currentRound = gameRound
+        setGameRound(currentRound+1)
+        setGameState(newGameState)
+       
     }
 
     const configToggleHandler = () => {
@@ -104,9 +128,6 @@ const Jackpot = (props) => {
 
 
 
-
-
-    let dynGameState = []
     if(config){
         const style = {
             color: '#e3c43b'
@@ -159,7 +180,6 @@ const Jackpot = (props) => {
             const housefull = {
                 color: '#666666'
             }
-            setGameState(props.all_players)
             return (
                 //full team block render
                 <div className="game-container">
