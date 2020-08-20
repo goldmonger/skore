@@ -17,9 +17,8 @@ const Gamer = props => {
                 name="skore_input"
                 defaultValue={""}
                 pattern="\d*"
-                //onfocus clear input using refs somehow
-                //onChange={props.changed}//display gray icon here
-                //idk when but when the players approve the skore we make their icon go green sync
+                autocapitalize="off"
+                
                 />
 
                 <img src={require("../res/green_tick_nowhite.png")} className="approval_icon" />
