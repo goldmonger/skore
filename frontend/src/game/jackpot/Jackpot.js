@@ -26,7 +26,7 @@ const Jackpot = (props) => {
             
         }
         
-    })
+    },[playing])
 
     const gangFlagToggleHandler = () => {
         if (gang === true){
