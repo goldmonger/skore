@@ -17,6 +17,7 @@ const Gamer = props => {
                 name="skore_input"
                 defaultValue={""}
                 pattern="\d*"
+                autocapitalize="off"
                 
                 />
 

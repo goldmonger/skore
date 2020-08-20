@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './Jackpot.css'
 
 import Gamer from '../../shared/components/Gamer'
@@ -11,9 +11,22 @@ const Jackpot = (props) => {
     const [ gameRound, setGameRound ] = useState(1)
     const [ gameState, setGameState ] = useState(props.all_players)
     const [ playing, setPlaying ] = useState(null)
+    const [ dealer, setDealer ] = useState('')
 
 
     const newPlayerNameInputRef = useRef(null)
+    const dealerInputRef = useRef(null)
+
+
+    useEffect(() => {
+        if(config){
+            
+            newPlayerNameInputRef.current.focus()
+            newPlayerNameInputRef.current.click()
+            
+        }
+        
+    })
 
     const gangFlagToggleHandler = () => {
         if (gang === true){
@@ -35,7 +48,7 @@ const Jackpot = (props) => {
         //then the backend has to return a json object for game state initialised to 0
         //then we need to set this as game state for round 1
         //alert("sending the fetch")
-        const response = await fetch('http://ckr.is:5000/game/jackpot/init', {
+        const response = await fetch('http://192.168.1.16:5000/game/jackpot/init', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -45,9 +58,15 @@ const Jackpot = (props) => {
             })
         })
         const responseData = await response.json()
-        console.log(responseData)
+        //console.log(responseData)
+        setDealer(dealerInputRef.current.value)
+        //console.log(dealerInputRef.current.value)
+        console.log(dealer)
         setGameState(responseData)
         setConfig(false)
+        
+
+        
 
       
     }
@@ -62,7 +81,7 @@ const Jackpot = (props) => {
             currentPlaying = []
         }
         currentPlaying.push(newPlayerNameInputRef.current.value)
-        console.log(currentPlaying)
+        //console.log(currentPlaying)
         setPlaying(currentPlaying)
         newPlayerNameInputRef.current.value = ''
 
@@ -87,8 +106,6 @@ const Jackpot = (props) => {
             skores.push(player.skore)
             playerNames.push(player.name)
             playerIds.push(player.id)
-
-
         })
         let newGameObj = {
             playerNames: playerNames,
@@ -99,7 +116,7 @@ const Jackpot = (props) => {
         }
 
         
-        const response = await fetch('http://ckr.is:5000/game/jackpot/round', {
+        const response = await fetch('http://192.168.1.16:5000/game/jackpot/round', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -107,11 +124,21 @@ const Jackpot = (props) => {
             body: JSON.stringify(newGameObj)
         })
         const responseData = await response.json()
-        console.log(responseData)
+        //console.log(responseData)
         let newGameState = []
+        let outplayer = ""
         responseData.playerNames.map((player, index) => {
+            if(parseInt(responseData.skores[index]) >= 250){
+                inputs[index].value = 250
+                inputs[index].disabled = true
+                
+                outplayer = player + " out"
+            }
+            else{
+                outplayer = player
+            }
             let updatedPlayer = {
-                name: player,
+                name: outplayer,
                 id: responseData.playerIds[index],
                 skore: responseData.skores[index]
             }
@@ -119,7 +146,22 @@ const Jackpot = (props) => {
         })
         let currentRound = gameRound
         setGameRound(currentRound+1)
+        let nextDealer = playing.findIndex(p => {
+            return p === dealer
+        })
+        //console.log('next dealer', nextDealer, 'round', gameRound)
+        if(nextDealer < playing.length-1){
+            nextDealer += 1
+        }
+        else{
+            nextDealer = (nextDealer+1) % playing.length
+        }
+        console.log(nextDealer)
+        setDealer(playing[nextDealer])
         setGameState(newGameState)
+        for(let s=0; s< inputs.length; s++){
+            inputs[s].value = ''
+        }
        
     }
 
@@ -144,11 +186,12 @@ const Jackpot = (props) => {
                 {gang ?
                 <button value="reset" onClick={gangFlagToggleHandler} className="game_flag_button">reset</button>
                 :
-                <button value="set" onClick={gangFlagToggleHandler} className="game_flag_button" >set</button>
+                <button value="set" onClick={gangFlagToggleHandler} className="game_flag_button" disabled>set</button>
                 }
                 {!gang ?
                 <div className="new_game_form_div">
-                    <label>enter player name to add </label><input ref={newPlayerNameInputRef} type='text' className="game-input1"></input>
+                    <label><b>add player: </b></label><input ref={newPlayerNameInputRef} type='text' className="game-input1" autocapitalize="off"></input>
+                    <label><b>dealer: </b></label><input ref={dealerInputRef} type='text' className="game-input1" autocapitalize="off"></input>
                     <button className="game-button" onClick={addPlayerHandler}>ADD</button>
                     <button className="game-button" onClick={newGameGenerateHandler}>START</button>
                 </div>
@@ -187,6 +230,7 @@ const Jackpot = (props) => {
                     <div className="game">
                         <h3>Jackpot {stakes}</h3> 
                         <h5 style={housefull}>{gang ? "full house" : "" }</h5>
+                        <h5>game {gameRound}</h5>
                         <div className="game-container">
                         <form onSubmit={onRoundSubmitHandler}>
                             {
@@ -219,7 +263,7 @@ const Jackpot = (props) => {
                     <div className="game-container">
                         <div className="game">
                         <h3>Jackpot {stakes}</h3>
-                        <h5>game {gameRound}</h5>
+                        <h5>game {gameRound} dealer: {dealer}</h5>
                             <div className="game-container">
                             <form onSubmit={onRoundSubmitHandler}>
                                 {

@@ -23,7 +23,12 @@ router.post('/jackpot/round', (req, res, next) => {
     console.log(req.body)
     let updatedSkores = []
     for (let x=0; x< req.body.curSkores.length; x++){
-        updatedSkores.push(parseInt(req.body.skores[x]) + parseInt(req.body.curSkores[x]))
+        if(parseInt(req.body.skores[x]) + parseInt(req.body.curSkores[x]) >= 250){
+            updatedSkores.push(250)
+        }
+        else{
+            updatedSkores.push(parseInt(req.body.skores[x]) + parseInt(req.body.curSkores[x]))
+        }
     }
     let newJsonObj = {
         playerNames: req.body.playerNames,
