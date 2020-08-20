@@ -1,6 +1,10 @@
 .gamer_name {
     color: azure;
     width: 130px;
+    position: relative;
+    font-size: 26px;
+    color: #e3c43b;
+    top: 10px;
 }
 
 .game_list_item {
@@ -21,28 +25,35 @@
 }
 
 .cumulative_skore {
-    color: #e3c43b;
+    color: #282c34;
     position: relative;
-    top: 10px;
-    left: 15px;
+    bottom: 10px;
     width: 50px;
+    font-size: 20px;
+    text-align: center;
 
 }
 .approval_icon{
     width: 60px;
     height: 46px;
     position: relative;
-    top: 27px;
-    left: 20px;
+    top: 29px;
+    left: 30px;
     float: right;
   
     
 }
-.current_skore_input{
+.game-input2{
     float: right;
     position: relative;
-    
-    top: 28px;
+    background-color: #282c34;
+    text-align: center;
+    color: #e3c43b;
+    border-radius: 7px;
+    border-color: #666666;
+    border-width: 4px;
+    padding: 2px 5px;
+    top: 33px;
     left: 20px;
     width: 40px;
     height: 30px;

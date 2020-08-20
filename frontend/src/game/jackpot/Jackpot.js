@@ -28,6 +28,7 @@ const Jackpot = (props) => {
         
     },[playing])
 
+
     const gangFlagToggleHandler = () => {
         if (gang === true){
             setGang(false)
@@ -73,6 +74,12 @@ const Jackpot = (props) => {
 
     const addPlayerHandler = (e) => {
         e.preventDefault()
+        
+        if( dealerInputRef.current.value === '' || dealerInputRef.current.value === null){
+            dealerInputRef.current.value = newPlayerNameInputRef.current.value
+        } 
+        setDealer(dealerInputRef.current.value)
+
         let currentPlaying = []
         if(playing !== null){
             currentPlaying = [...playing]
@@ -84,8 +91,8 @@ const Jackpot = (props) => {
         //console.log(currentPlaying)
         setPlaying(currentPlaying)
         newPlayerNameInputRef.current.value = ''
-
     }
+    
     
 
     const onRoundSubmitHandler = async (e) => {
@@ -95,10 +102,14 @@ const Jackpot = (props) => {
         // and update this object as the game state
         let inputs = document.getElementsByName('skore_input')
         let curSkores = []
+        let disabledBoxCount = 0
         for(let s=0; s< inputs.length; s++){
             curSkores.push(inputs[s].value)
+            if(inputs[s].disabled === true){
+                disabledBoxCount += 1
+            }
         }
-        //console.log(curSkores)
+        console.log(disabledBoxCount)
         let skores = []
         let playerNames = []
         let playerIds = []
@@ -190,7 +201,7 @@ const Jackpot = (props) => {
                 }
                 {!gang ?
                 <div className="new_game_form_div">
-                    <label><b>add player: </b></label><input ref={newPlayerNameInputRef} type='text' className="game-input1" autocapitalize="off"></input>
+                    <label><b>add player: </b></label><input ref={newPlayerNameInputRef} type='text' className="game-input1" autocapitalize="off"  ></input>
                     <label><b>dealer: </b></label><input ref={dealerInputRef} type='text' className="game-input1" autocapitalize="off"></input>
                     <button className="game-button" onClick={addPlayerHandler}>ADD</button>
                     <button className="game-button" onClick={newGameGenerateHandler}>START</button>
