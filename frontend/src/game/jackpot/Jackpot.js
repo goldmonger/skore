@@ -12,6 +12,8 @@ const Jackpot = (props) => {
     const [ gameState, setGameState ] = useState(props.all_players)
     const [ playing, setPlaying ] = useState(null)
     const [ dealer, setDealer ] = useState('')
+    const [ inOut, setInOut ] = useState(null)
+    //const [ winner, setWinner ] = useState(null)
 
 
     const newPlayerNameInputRef = useRef(null)
@@ -49,7 +51,7 @@ const Jackpot = (props) => {
         //then the backend has to return a json object for game state initialised to 0
         //then we need to set this as game state for round 1
         //alert("sending the fetch")
-        const response = await fetch('http://ckr.is:5000/game/jackpot/init', {
+        const response = await fetch('http://localhost:5000/game/jackpot/init', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -62,7 +64,7 @@ const Jackpot = (props) => {
         //console.log(responseData)
         setDealer(dealerInputRef.current.value)
         //console.log(dealerInputRef.current.value)
-        console.log(dealer)
+        //console.log(dealer)
         setGameState(responseData)
         setConfig(false)
         
@@ -81,15 +83,15 @@ const Jackpot = (props) => {
         setDealer(dealerInputRef.current.value)
 
         let currentPlaying = []
+        let currentInOut = []
         if(playing !== null){
             currentPlaying = [...playing]
-        }
-        else{
-            currentPlaying = []
+            currentInOut = [...inOut]
         }
         currentPlaying.push(newPlayerNameInputRef.current.value)
-        //console.log(currentPlaying)
+        currentInOut.push("in")
         setPlaying(currentPlaying)
+        setInOut(currentInOut)
         newPlayerNameInputRef.current.value = ''
     }
     
@@ -103,13 +105,19 @@ const Jackpot = (props) => {
         let inputs = document.getElementsByName('skore_input')
         let curSkores = []
         let disabledBoxCount = 0
+        let outIndex = []
         for(let s=0; s< inputs.length; s++){
             curSkores.push(inputs[s].value)
-            if(inputs[s].disabled === true){
+            if(inputs[s].readonly === true){
                 disabledBoxCount += 1
+                outIndex.push('out')
+            }
+            else{
+                outIndex.push('in')
             }
         }
-        console.log(disabledBoxCount)
+        //if()
+        //console.log(disabledBoxCount)
         let skores = []
         let playerNames = []
         let playerIds = []
@@ -127,7 +135,7 @@ const Jackpot = (props) => {
         }
 
         
-        const response = await fetch('http://ckr.is:5000/game/jackpot/round', {
+        const response = await fetch('http://localhost:5000/game/jackpot/round', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -137,19 +145,17 @@ const Jackpot = (props) => {
         const responseData = await response.json()
         //console.log(responseData)
         let newGameState = []
-        let outplayer = ""
+        
         responseData.playerNames.map((player, index) => {
             if(parseInt(responseData.skores[index]) >= 250){
-                inputs[index].value = 250
-                inputs[index].disabled = true
-                
-                outplayer = player + " out"
+                inputs[index].readonly = true
+                inputs[index].value = 'out'
             }
             else{
-                outplayer = player
+                inputs[index].value = ''
             }
             let updatedPlayer = {
-                name: outplayer,
+                name: player,
                 id: responseData.playerIds[index],
                 skore: responseData.skores[index]
             }
@@ -159,21 +165,26 @@ const Jackpot = (props) => {
         setGameRound(currentRound+1)
         let nextDealer = playing.findIndex(p => {
             return p === dealer
+            // return index of current dealer into next dealer
         })
-        //console.log('next dealer', nextDealer, 'round', gameRound)
+
+
+
+
+
+
+        /* Working Logic for players without out
+
         if(nextDealer < playing.length-1){
             nextDealer += 1
         }
         else{
             nextDealer = (nextDealer+1) % playing.length
         }
-        console.log(nextDealer)
+        */
+        //console.log(nextDealer)
         setDealer(playing[nextDealer])
         setGameState(newGameState)
-        for(let s=0; s< inputs.length; s++){
-            inputs[s].value = ''
-        }
-       
     }
 
     const configToggleHandler = () => {

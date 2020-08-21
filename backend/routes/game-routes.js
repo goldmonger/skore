@@ -19,8 +19,8 @@ router.post('/jackpot/init', (req, res, next) => {
     next()
 })
 router.post('/jackpot/round', (req, res, next) => {
-    console.log('GET request 1 in place for jackpot round')
-    console.log(req.body)
+    //console.log('GET request 1 in place for jackpot round')
+    //console.log(req.body)
     let updatedSkores = []
     for (let x=0; x< req.body.curSkores.length; x++){
         if(parseInt(req.body.skores[x]) + parseInt(req.body.curSkores[x]) >= 250){
