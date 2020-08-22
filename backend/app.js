@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 
 const usersRoutes = require('./routes/users-routes')
 const gameRoutes = require('./routes/game-routes')
+const mongof = require('./mongo')
 const app = express()
 
 app.use(bodyParser.json())
