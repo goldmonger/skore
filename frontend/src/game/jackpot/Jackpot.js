@@ -12,11 +12,26 @@ const Jackpot = (props) => {
     const [ gameState, setGameState ] = useState(props.all_players)
     const [ playing, setPlaying ] = useState(null)
     const [ dealer, setDealer ] = useState('')
+    const [ gameCode, setGameCode ] = useState(null)
 
 
     const newPlayerNameInputRef = useRef(null)
     const dealerInputRef = useRef(null)
 
+
+    useEffect(async () => {
+        //send req for a new jackpot game code to backend
+        const response = await fetch('http://localhost:5000/game/jackpot/code', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+            
+        })
+        const responseData = await response.json()
+        setGameCode(responseData.code)
+        
+    },[])
 
     useEffect(() => {
         if(config){
@@ -44,11 +59,13 @@ const Jackpot = (props) => {
     const newGameGenerateHandler = async (e) => {
         e.preventDefault()
         //setConfig(false)
+
+
         //send the array of players to backend
         //then the backend has to return a json object for game state initialised to 0
         //then we need to set this as game state for round 1
         //alert("sending the fetch")
-        const response = await fetch('http://ckr.is:5000/game/jackpot/init', {
+        const response = await fetch('http://localhost:5000/game/jackpot/init', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -116,7 +133,7 @@ const Jackpot = (props) => {
         }
 
         
-        const response = await fetch('http://ckr.is:5000/game/jackpot/round', {
+        const response = await fetch('http://localhost:5000/game/jackpot/round', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -179,6 +196,8 @@ const Jackpot = (props) => {
             <div className="game-container  ">
         
                 <h3>Jackpot</h3>
+                <label><b>Join Code: </b></label> <input type="text" name="join_game_input" className="game-input1" />
+                <h4>New Game Code: {gameCode}</h4>
                 <label><b>stakes: </b></label><label style={style}><b>{stakes}</b></label>
                 <input type="text" name="stakes" className="game-input1" id="stakes_input" value={stakes} onChange={stakesInputHandler} />
                 <br />
