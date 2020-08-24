@@ -184,7 +184,7 @@ const Jackpot = (props) => {
             // return index of current dealer into next dealer
         })
 
-        /* Working Logic for players without out
+        /* Working Logic for players without out */
 
         if(nextDealer < playing.length-1){
             nextDealer += 1
