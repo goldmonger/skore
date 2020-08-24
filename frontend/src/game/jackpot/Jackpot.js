@@ -11,10 +11,11 @@ const Jackpot = (props) => {
     const [ gameRound, setGameRound ] = useState(1)
     const [ gameState, setGameState ] = useState(props.all_players)
     const [ playing, setPlaying ] = useState(null)
-    const [ dealer, setDealer ] = useState(' ')
-    const [ inOut, setInOut ] = useState(null)
     const [ seriesID, setSeriesId ] = useState(null)
     const [ winner, setWinner ] = useState(null)
+    const [ dealer, setDealer ] = useState('')
+    const [ inOut, setInOut ] = useState(null)
+
 
 
     const newPlayerNameInputRef = useRef(null)
@@ -28,12 +29,6 @@ const Jackpot = (props) => {
         }
         
     },[playing])
-
-    
-  
-
-
-
 
     const gangFlagToggleHandler = () => {
         gang ?
@@ -55,6 +50,7 @@ const Jackpot = (props) => {
     const newGameGenerateHandler = async (e) => {
         e.preventDefault()
         const response = await fetch('http://ckr.is:5000/game/jackpot/init', {
+
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -73,7 +69,6 @@ const Jackpot = (props) => {
         //console.log(dealer)
         setGameState(responseData.gameState)
         setSeriesId(responseData.code)
-
         setConfig(false)
         
 
@@ -107,6 +102,7 @@ const Jackpot = (props) => {
         setWinner(arg1)
     }
 
+
     const onRoundSubmitHandler = async (e) => {
         e.preventDefault()
         //send http post req with current game state and the current skores
@@ -114,8 +110,6 @@ const Jackpot = (props) => {
         // and update this object as the game state
         let inputs = document.getElementsByName('skore_input')
         let curSkores = []
-        
-        // idk why i created this let maybe to check for all skips or something 
         let disabledBoxCount = 0
         let outIndex = []
         for(let s=0; s< inputs.length; s++){
@@ -128,6 +122,7 @@ const Jackpot = (props) => {
                 outIndex.push('in')
             }
         }
+
         setInOut(outIndex)
         if(disabledBoxCount === inputs.length - 1){
             let winn = inOut.findIndex((e) => {
@@ -135,6 +130,7 @@ const Jackpot = (props) => {
             })
             dispatchWinnerScreen(playing[winn])
         }
+
         //console.log(disabledBoxCount)
         let skores = []
         let playerNames = []
@@ -154,7 +150,7 @@ const Jackpot = (props) => {
         }
 
         
-        const response = await fetch('http://ckr.is:5000/game/jackpot/round', {
+        const response = await fetch('http://localhost:5000/game/jackpot/round', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -169,7 +165,7 @@ const Jackpot = (props) => {
             if(parseInt(responseData.skores[index]) >= 250){
                 inputs[index].value = '250'
                 //inputs[index].readonly = true
-                
+
             }
             else{
                 inputs[index].value = ''
@@ -188,19 +184,18 @@ const Jackpot = (props) => {
             // return index of current dealer into next dealer
         })
 
-        // Working Logic for players without out
-        
+        /* Working Logic for players without out
+
         if(nextDealer < playing.length-1){
             nextDealer += 1
         }
         else{
             nextDealer = (nextDealer+1) % playing.length
         }
-        //*/
-        //console.log(nextDealer)
+
         setDealer(playing[nextDealer])
         setGameState(newGameState)
-        
+
     }
 
     const configToggleHandler = () => {
@@ -231,7 +226,9 @@ const Jackpot = (props) => {
                 {!gang ?
                 <div className="new_game_form_div">
                     <label><b>add player: </b></label><input ref={newPlayerNameInputRef} type='text' className="game-input1" autocapitalize="off"  ></input>
+
                     <label><b>dealer: </b></label><input ref={dealerInputRef} type='text' className="game-input1" autocapitalize="off" onChange={onChangeDealerUpdateHandler} ></input>
+
                     <button className="game-button" onClick={addPlayerHandler}>ADD</button>
                     <button className="game-button" onClick={newGameGenerateHandler}>START</button>
                 </div>
