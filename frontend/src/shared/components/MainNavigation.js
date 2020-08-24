@@ -29,14 +29,13 @@ const MainNavigation = (props) => {
         
         <Brand >
             <button className="main-navigation__menu-btn" onClick={openDrawer} >
-            <span />
-            <span />
-            <span />
-        </button>
-        <nav className="main-navigation__header-nav">
-            <NavLinks />
-        </nav>
-        
+                <span />
+                <span />
+                <span />
+            </button>
+            <nav className="main-navigation__header-nav">
+                <NavLinks />
+            </nav>
         </Brand>
         </React.Fragment>
     )

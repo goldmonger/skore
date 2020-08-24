@@ -6,7 +6,7 @@ import Ss7 from './game/ss7/Ss7'
 import Jackpot from './game/jackpot/Jackpot'
 import JackpotPlayers from './game/jackpot/JackpotPlayers'
 import MainNavigation from './shared/components/MainNavigation'
-import Brand from './header/Brand'
+import './hamburgers.css'
 
 
 const App = () => {

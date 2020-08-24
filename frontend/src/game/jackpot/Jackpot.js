@@ -54,7 +54,7 @@ const Jackpot = (props) => {
 
     const newGameGenerateHandler = async (e) => {
         e.preventDefault()
-        const response = await fetch('http://192.168.1.16:5000/game/jackpot/init', {
+        const response = await fetch('http://ckr.is:5000/game/jackpot/init', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -154,7 +154,7 @@ const Jackpot = (props) => {
         }
 
         
-        const response = await fetch('http://192.168.1.16:5000/game/jackpot/round', {
+        const response = await fetch('http://ckr.is:5000/game/jackpot/round', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
