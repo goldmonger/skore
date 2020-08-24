@@ -1,0 +1,41 @@
+.main-navigation__menu-btn {
+    width: 40px;
+    height: 30px;
+    background: transparent;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    cursor: pointer;
+    position: relative;
+    left: 50px;
+    top: 13px;
+
+  }
+  
+  .main-navigation__menu-btn span {
+    display: block;
+    width: 25px;
+    height: 2px;
+    background: #61dafb;
+  }
+  
+  
+  
+  .main-navigation__header-nav {
+    display: none;
+  }
+  
+  .main-navigation__drawer-nav {
+    height: 100%;
+  }
+  
+  @media (min-width: 768px) {
+    .main-navigation__menu-btn {
+      display: none;
+    }
+  
+    .main-navigation__header-nav {
+      display: block;
+    }
+  }

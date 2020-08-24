@@ -6,20 +6,16 @@ import Ss7R from './Ss7R';
 
 
 const Ss7 = () => {
-    const [selected, setSs7R] = useState({
-        pl: [ "acetone7", "babykris", "baby" ]
-    });
+    const [selected, setSelected] = useState(null)
     const [ showRun, setShowRun ] = useState(false)
     
 
-    const beginSs7 = form_event => {
-        form_event.preventDefault();
-        setSs7R({
+    const beginSs7 = event => {
+        event.preventDefault();
+        setSelected({
             pl: [ "acetone7", "babykris", "baby" ]
         })
         setShowRun(true)
-        
-
     };
     if(showRun === false){
         return (
@@ -27,7 +23,7 @@ const Ss7 = () => {
                 <div className="game">
                     <h3>ss7</h3>
                     <h5>Add Players</h5>
-                    {/* display all the players contained in the array as checkboxes */}
+                    <h4>{selected}</h4>
                     <form onSubmit={beginSs7}>
                     <PlayersList player_items={PLAYERS}/>
                     <button 

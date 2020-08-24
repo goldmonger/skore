@@ -21,7 +21,7 @@ const Gamer = props => {
                 
                 />
 
-                <img src={require("../res/green_tick_nowhite.png")} className="approval_icon" />
+                <img src={require("../res/green_tick_nowhite.png")} className="approval_icon" style={{display: "none"}} />
             </div>
         </li>
     )
