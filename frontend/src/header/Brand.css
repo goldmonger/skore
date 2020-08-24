@@ -1,0 +1,68 @@
+
+  @media (min-width: 850px) {
+    .App-header {
+      justify-content: space-between;
+    }
+  }
+  .App-header {
+    background-color: #282c34;
+    min-height: 60px; 
+    display: flex;
+    /*flex-direction: column;*/
+  
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+    padding: 0px 0;
+    padding-bottom: 10px;
+    z-index: 5;
+  
+  }
+  .App-header > a{
+    text-decoration: none;
+    color: azure;
+    height: 60px;
+  }
+
+  .logo_skore {
+    display: inline;
+    padding: 0;
+    margin: 0;
+    position: relative;
+    bottom: 13px;
+    font-size: 38px;
+    text-decoration: none;
+  
+  }
+  
+  #sk{
+    left: 13px;
+    text-decoration: none;
+   
+  }
+  #re{
+    right: 13px;
+    
+  }
+  .skore_title{
+    color: white;
+    background-color: #282c34;
+    padding: 10px 0;
+    margin: 0;
+  }
+  .skore{
+    margin: 0;
+    padding: 0;
+    position: relative;
+    right: 70px;
+    top: 17px;
+    text-decoration: none;
+  }
+  #llm_original{
+    font-size: 13px;
+    margin: 0;
+    padding: 0;
+    color: #666666;
+  }

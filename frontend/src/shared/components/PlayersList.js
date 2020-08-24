@@ -1,8 +1,17 @@
-import React, { useReducer } from 'react';
+import React, { useState } from 'react';
 import './PlayersList.css'
 import PlayerItem from './PlayerItem'
 
 const PlayersList = props => {
+
+    const [selected, setSelected] = useState([])
+
+    const onCheck = () => {
+
+    }
+    const onUncheck = () =>{
+
+    }
 
     if(props.player_items.length === 0){
         return (
@@ -21,8 +30,9 @@ const PlayersList = props => {
                     swins={player.swins}
                     splayed={player.splayed}
                     mwins={player.mwins}
-                    isChecked={player.ischecked}
-
+                    isChecked={false}
+                    onCheck={() => onCheck()}
+                    onUncheck={onUncheck}
                 />
             ))}
         </ul>

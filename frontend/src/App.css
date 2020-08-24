@@ -19,22 +19,7 @@
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 60px; 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: azure;
-  padding: 10px 0;
-}
 
-.App-link {
-  color: #61dafb;
-}
 
 @keyframes App-logo-spin {
   from {
@@ -66,40 +51,7 @@
   font-size: 20px;
   text-decoration: none;
 }
-.logo_skore {
-  display: inline;
-  padding: 0;
-  margin: 0;
-  position: relative;
-  bottom: 13px;
-  font-size: 38px;
-}
-#sk{
-  left: 13px;
- 
-}
-#re{
-  right: 13px;
-  
-}
-.skore_title{
-  color: white;
-  background-color: #282c34;
-  padding: 10px 0;
-  margin: 0;
-}
-.skore{
-  margin: 0;
-  padding: 0;
-  position: relative;
-  left: 9px;
-}
-#llm_original{
-  font-size: 13px;
-  margin: 0;
-  padding: 0;
-  color: #666666;
-}
+
 .game-container{
   margin: 0;
   margin-top: 30px;

@@ -11,9 +11,11 @@ const Jackpot = (props) => {
     const [ gameRound, setGameRound ] = useState(1)
     const [ gameState, setGameState ] = useState(props.all_players)
     const [ playing, setPlaying ] = useState(null)
+    const [ seriesID, setSeriesId ] = useState(null)
+    const [ winner, setWinner ] = useState(null)
     const [ dealer, setDealer ] = useState('')
     const [ inOut, setInOut ] = useState(null)
-    //const [ winner, setWinner ] = useState(null)
+
 
 
     const newPlayerNameInputRef = useRef(null)
@@ -21,23 +23,24 @@ const Jackpot = (props) => {
 
 
     useEffect(() => {
-        if(config){
-            
+        if(config && gang === false){
             newPlayerNameInputRef.current.focus()
             newPlayerNameInputRef.current.click()
-            
         }
         
     },[playing])
 
-
     const gangFlagToggleHandler = () => {
-        if (gang === true){
-            setGang(false)
-        }
-        else{
-            setGang(true)
-        }
+        gang ?
+        setPlaying(null)
+        :
+        setPlaying(["ravi", "roopa", "ronnie"])
+
+        gang ? 
+        setGang(false)
+        :
+        setGang(true)
+        
     }
 
     const stakesInputHandler = (e) => {
@@ -46,18 +49,17 @@ const Jackpot = (props) => {
 
     const newGameGenerateHandler = async (e) => {
         e.preventDefault()
-        //setConfig(false)
-        //send the array of players to backend
-        //then the backend has to return a json object for game state initialised to 0
-        //then we need to set this as game state for round 1
-        //alert("sending the fetch")
-        const response = await fetch('http://localhost:5000/game/jackpot/init', {
+        const response = await fetch('http://ckr.is:5000/game/jackpot/init', {
+
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                playerNames: playing
+                playerNames: playing,
+                stakes: stakes
+                //seriesID: seriesID
+
             })
         })
         const responseData = await response.json()
@@ -65,7 +67,8 @@ const Jackpot = (props) => {
         setDealer(dealerInputRef.current.value)
         //console.log(dealerInputRef.current.value)
         //console.log(dealer)
-        setGameState(responseData)
+        setGameState(responseData.gameState)
+        setSeriesId(responseData.code)
         setConfig(false)
         
 
@@ -95,7 +98,10 @@ const Jackpot = (props) => {
         newPlayerNameInputRef.current.value = ''
     }
     
-    
+    const dispatchWinnerScreen = (arg1) => {
+        setWinner(arg1)
+    }
+
 
     const onRoundSubmitHandler = async (e) => {
         e.preventDefault()
@@ -116,7 +122,15 @@ const Jackpot = (props) => {
                 outIndex.push('in')
             }
         }
-        //if()
+
+        setInOut(outIndex)
+        if(disabledBoxCount === inputs.length - 1){
+            let winn = inOut.findIndex((e) => {
+                return e === "in" 
+            })
+            dispatchWinnerScreen(playing[winn])
+        }
+
         //console.log(disabledBoxCount)
         let skores = []
         let playerNames = []
@@ -131,7 +145,8 @@ const Jackpot = (props) => {
             playerIds: playerIds,
             skores: skores,
             round: gameRound,
-            curSkores: curSkores
+            curSkores: curSkores,
+            seriesID: seriesID
         }
 
         
@@ -148,8 +163,9 @@ const Jackpot = (props) => {
         
         responseData.playerNames.map((player, index) => {
             if(parseInt(responseData.skores[index]) >= 250){
-                inputs[index].readonly = true
-                inputs[index].value = 'out'
+                inputs[index].value = '250'
+                //inputs[index].readonly = true
+
             }
             else{
                 inputs[index].value = ''
@@ -168,11 +184,6 @@ const Jackpot = (props) => {
             // return index of current dealer into next dealer
         })
 
-
-
-
-
-
         /* Working Logic for players without out
 
         if(nextDealer < playing.length-1){
@@ -181,17 +192,19 @@ const Jackpot = (props) => {
         else{
             nextDealer = (nextDealer+1) % playing.length
         }
-        */
-        //console.log(nextDealer)
+
         setDealer(playing[nextDealer])
         setGameState(newGameState)
+
     }
 
     const configToggleHandler = () => {
         setConfig(false)
     }
 
-
+    const onChangeDealerUpdateHandler = (e) => {
+        setDealer(e.target.value)
+    }
 
     if(config){
         const style = {
@@ -208,12 +221,14 @@ const Jackpot = (props) => {
                 {gang ?
                 <button value="reset" onClick={gangFlagToggleHandler} className="game_flag_button">reset</button>
                 :
-                <button value="set" onClick={gangFlagToggleHandler} className="game_flag_button" disabled>set</button>
+                <button value="set" onClick={gangFlagToggleHandler} className="game_flag_button" >set</button>
                 }
                 {!gang ?
                 <div className="new_game_form_div">
                     <label><b>add player: </b></label><input ref={newPlayerNameInputRef} type='text' className="game-input1" autocapitalize="off"  ></input>
-                    <label><b>dealer: </b></label><input ref={dealerInputRef} type='text' className="game-input1" autocapitalize="off"></input>
+
+                    <label><b>dealer: </b></label><input ref={dealerInputRef} type='text' className="game-input1" autocapitalize="off" onChange={onChangeDealerUpdateHandler} ></input>
+
                     <button className="game-button" onClick={addPlayerHandler}>ADD</button>
                     <button className="game-button" onClick={newGameGenerateHandler}>START</button>
                 </div>
@@ -235,7 +250,12 @@ const Jackpot = (props) => {
                 {!gang ?
                 null
                 :
-                <button className="game-button" onClick={configToggleHandler}>START</button>
+                <div className="new_game_form_div">
+                    
+                    <label><b>dealer: </b></label><input ref={dealerInputRef} type='text' className="game-input1" autocapitalize="off" onChange={onChangeDealerUpdateHandler} ></input>
+                    <button className="game-button" onClick={configToggleHandler}>START</button>
+                    
+                </div>
                 }    
             </div> 
         )
@@ -251,8 +271,8 @@ const Jackpot = (props) => {
                 <div className="game-container">
                     <div className="game">
                         <h3>Jackpot {stakes}</h3> 
-                        <h5 style={housefull}>{gang ? "full house" : "" }</h5>
-                        <h5>game {gameRound}</h5>
+                        <h5 style={housefull}>{gang ? "usual" : "" } {seriesID}</h5>
+                        <h5>game {gameRound} dealer: {dealer}</h5>
                         <div className="game-container">
                         <form onSubmit={onRoundSubmitHandler}>
                             {
@@ -280,11 +300,16 @@ const Jackpot = (props) => {
         }
         else{
             if(playing !== null){
+                const housefull = {
+                    color: '#666666'
+                }
+            if(winner===null){
                 return (
                     //dynamic team block render
                     <div className="game-container">
                         <div className="game">
                         <h3>Jackpot {stakes}</h3>
+                        <h5 style={housefull}>{seriesID}</h5>
                         <h5>game {gameRound} dealer: {dealer}</h5>
                             <div className="game-container">
                             <form onSubmit={onRoundSubmitHandler}>
@@ -309,6 +334,26 @@ const Jackpot = (props) => {
                     </div>
                     
                 )
+            }
+            else{
+                return(
+                    
+                    <div className="game-container">
+                        <div className="game">
+                        <h3>Jackpot {stakes}</h3>
+                        <h5 style={housefull}>{seriesID}</h5>
+                        <div className="result">
+                            <h4 className="round_num">end of series</h4>
+                            <h2>winner is {winner}</h2>
+                        </div>
+                            
+                        </div>
+                    </div>
+                )
+
+            }
+                
+                
             }
             
         }

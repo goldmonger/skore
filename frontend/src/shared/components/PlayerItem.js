@@ -6,17 +6,18 @@ import Switch from 'react-switch';
 
 
 const PlayerItem = props => {
-    const [state, setState] = useState({ checked: false});
+    const [selected, setSelected] = useState(false);
+
     const handleChange = () => {
-        if (state.checked === false){
-            setState({checked: true})
-            console.log("add " + props.id + " to selected")
-            //how where is selected??
-            
+        if (selected === false){
+            setSelected(true)
+            //console.log("add " + props.id + " to selected")
+            props.isChecked = true
         }
         else{
-            setState({checked: false})
-            console.log("remove " + props.id + " from selected")
+            setSelected(false)
+            //console.log("remove " + props.id + " from selected")
+            props.isChecked = false
         }
     };
 
@@ -33,7 +34,7 @@ const PlayerItem = props => {
                     <div className="player-item__select" id={props.id+"div"}>
                         <Switch
                             onChange={() => handleChange(props.id)}
-                            checked={state.checked} 
+                            checked={selected} 
                             handleDiameter={43}
                             height={50}
                             width={90}
