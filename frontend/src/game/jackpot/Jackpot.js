@@ -27,7 +27,7 @@ const Jackpot = (props) => {
         // retrieves the series code for current series 
         // and sets the series id
         let salt
-        axios.get('http://192.168.1.16:5000/game/jackpot/code')
+        axios.get('http://ckr.is:5000/game/jackpot/code')
             .then(response => {
                 console.log(response.data.code)
                 salt = response.data.code
@@ -60,7 +60,7 @@ const Jackpot = (props) => {
         // series has code, playing array, stakes
         e.preventDefault()
 
-        const response = await fetch('http://192.168.1.16:5000/game/jackpot/init', {
+        const response = await fetch('http://ckr.is:5000/game/jackpot/init', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -133,7 +133,7 @@ const Jackpot = (props) => {
             seriesID: seriesID
         }
 
-        const response = await fetch('http://192.168.1.16:5000/game/jackpot/round', {
+        const response = await fetch('http://ckr.is:5000/game/jackpot/round', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
