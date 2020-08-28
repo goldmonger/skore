@@ -22,6 +22,7 @@ const MainNavigation = (props) => {
         {drawerOpen && <Backdrop onClick={closeDrawer} />}
     
         <SideDrawer show={drawerOpen} onClick={closeDrawer} >
+            <h4 id="greeting_side_drawer">hi username</h4>
             <nav className="main_navigation__drawer-nav">
                 <NavLinks />
             </nav>

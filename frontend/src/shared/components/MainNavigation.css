@@ -39,3 +39,8 @@
       display: block;
     }
   }
+  #greeting_side_drawer{
+    position: relative;
+    bottom: 30px;
+    color: #e3c43b;
+  }

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import './Ss7.css';
-import PlayersList from '../../shared/components/PlayersList';
-import PLAYERS from '../../shared/LocalPlayers';
-import Ss7R from './Ss7R';
+import React, { useState } from 'react'
+import './Ss7.css'
+import PlayersList from '../../shared/components/PlayersList'
+import PLAYERS from '../../shared/LocalPlayers'
+import Ss7R from './Ss7R'
 
 
 const Ss7 = () => {
@@ -11,12 +11,12 @@ const Ss7 = () => {
     
 
     const beginSs7 = event => {
-        event.preventDefault();
+        event.preventDefault()
         setSelected({
             pl: [ "acetone7", "babykris", "baby" ]
         })
         setShowRun(true)
-    };
+    }
     if(showRun === false){
         return (
             <div className="game-container">
@@ -36,7 +36,7 @@ const Ss7 = () => {
                 </div>
             </div>
          
-        );
+        )
     }
     else{
         const plaa = selected.pl
@@ -50,6 +50,6 @@ const Ss7 = () => {
         )
     }
     
-};
+}
 
 export default Ss7;

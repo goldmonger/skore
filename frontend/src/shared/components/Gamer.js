@@ -5,7 +5,7 @@ import './Gamer.css'
 const Gamer = props => {
 
     const green_ticks = document.getElementsByName('green_tick')
-    console.log(green_ticks)
+    //console.log(green_ticks)
     
 
 

@@ -4,14 +4,8 @@ import PlayerItem from './PlayerItem'
 
 const PlayersList = props => {
 
-    const [selected, setSelected] = useState([])
+    const [selected, setSelected] = useState(false)
 
-    const onCheck = () => {
-
-    }
-    const onUncheck = () =>{
-
-    }
 
     if(props.player_items.length === 0){
         return (
@@ -30,9 +24,7 @@ const PlayersList = props => {
                     swins={player.swins}
                     splayed={player.splayed}
                     mwins={player.mwins}
-                    isChecked={false}
-                    onCheck={() => onCheck()}
-                    onUncheck={onUncheck}
+                    isChecked={selected}
                 />
             ))}
         </ul>

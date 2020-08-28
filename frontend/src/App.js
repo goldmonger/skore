@@ -36,14 +36,12 @@ const App = () => {
         </Route>
         <Route path="/" exact>
           <div className="App">
-            {//<Brand route="/"/>
-            }
             <div className="game-container">
                 <h2 className='skore_title'> Pick a game</h2>
                 <ul className="players_list">
-                <Link to='/game/ss7'><li id="ss7_li_main">super cyka 7</li></Link>
-                <Link to='/game/jackpot'><li id="jackpot_li_main">jackpot</li></Link>
-                <Link to='/game/solo'><li id="solo_li_main">f</li></Link>
+                <Link exact to='/game/ss7'><li id="ss7_li_main">cyper cyka 7</li></Link>
+                <Link exact to='/game/jackpot'><li id="jackpot_li_main">jackpot</li></Link>
+                <Link exact to='/game/solo'><li id="solo_li_main">f</li></Link>
                 </ul>
                 <div style={{color: '#888888'}} id="disclaimer">
                     <code>Nothing belongs to <span style={{color: '#e3c43b'}}>poisoncandy</span> and its <br /><span style={{color: '#f28fc7'}}>designer</span>, all components belong to <br /><span style={{color: '#61dafb'}}>facebook.</span></code>

@@ -21,12 +21,36 @@ const addGameRound = async (req, res, next) => {
     client.close()
 }
 
-const addSeries = async (req, res, next) => {
+const addSeries = async (playerNames, stakes, seriesID) => {
+    const newSeries = {
+        playerNames: playerNames,
+        stakes: stakes,
+        seriesID: seriesID
+    }
+    const client = new MongoClient(url)
+
+    try {
+        await client.connect()
+        const db = client.db()
+        const result = db.collection('jackpot_series').insertOne(newSeries)
+    } catch(error) {
+        return res.json({message: "Could not store series!"})
+    }
+    client.close()
 
 }
 
-const getAllSeries = async (req, res, next) => {
-
+const getAllSeries = async () => {
+    const client = new MongoClient(url)
+    try {
+        await client.connect()
+        const db = client.db()
+        const result = db.collection('jackpot_series').estimatedDocumentCount({})
+        return (result)
+    } catch(error) {
+        return res.json({message: "Could not fetch series!"})
+    }
+    client.close()
 }
 
 exports.addGameRound = addGameRound

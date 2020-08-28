@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import './PlayerItem.css';
-import Switch from 'react-switch';
+import React, { useState } from 'react'
+import './PlayerItem.css'
+import Switch from 'react-switch'
 
 
 
@@ -12,17 +12,16 @@ const PlayerItem = props => {
         if (selected === false){
             setSelected(true)
             //console.log("add " + props.id + " to selected")
-            props.isChecked = true
+            //props.isChecked = true
         }
         else{
             setSelected(false)
             //console.log("remove " + props.id + " from selected")
-            props.isChecked = false
+            //props.isChecked = false
         }
     };
 
     return (
-        //{/* here each li has to be made a separate component like a checkbox but highlight selected somehow */}
         <li className="player-item">
             <div className="player-item__content">
                 <div className="player-item__slot">
