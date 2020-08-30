@@ -13,8 +13,8 @@ const Jackpot = (props) => {
     const [ gameState, setGameState ] = useState(null)
     const [ playing, setPlaying ] = useState(null)
     const [ seriesID, setSeriesId ] = useState(null)
-    //const [ winner, setWinner ] = useState(null)
     const [ dealer, setDealer ] = useState('')
+    const [ opener, setOpen ] = useState(null)
     const [ out_list, setOutList ] = useState(null)
 
 
@@ -24,11 +24,12 @@ const Jackpot = (props) => {
 
 
     useEffect(() => {
-        // retrieves the series code for current series 
+        // retrieves the SERIES CODE for current series 
         // and sets the series id
         let salt
         axios.get('http://ckr.is:5000/game/jackpot/code')
             .then(response => {
+                // REMOVE BEFORE PROD console.log
                 console.log(response.data.code)
                 salt = response.data.code
                 setSeriesId(salt)
@@ -46,21 +47,32 @@ const Jackpot = (props) => {
         
     },[playing])
 
+    useEffect(() => {
+        // here i want to set the opener
+        console.log(dealer)
+        
+    },[dealer])
+
+
   
+
     // Dynamic Stakes input function
     const stakesInputHandler = (e) => {
         // updates stakes from input onChange
         setStakes(e.target.value)
     }
 
+
     // Function for NEW GAME INITIALIZATION
     // ====================================
     const newGameGenerateHandler = async (e) => {
-        // adds an entry into series collection 
-        // series has code, playing array, stakes
+        // adds an entry into series collection in db
+        // series has seriesID, playing array, stakes
+        // should also set the dealer from input
+        // round submit onwards we need to check the opener and then work backwards for dealer
         e.preventDefault()
 
-        const response = await fetch('http://ckr.is:5000/game/jackpot/init', {
+        const response = await fetch('http://192.168.1.16:5000/game/jackpot/init', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -73,9 +85,26 @@ const Jackpot = (props) => {
             })
         })
         const responseData = await response.json()
+        
         setDealer(dealerInputRef.current.value)
+        let openerIndexFirst = playing.findIndex(p => {
+            return p === dealer
+        })
+        if(openerIndexFirst < playing.length-1){
+            openerIndexFirst += 1
+        }
+        else{
+            openerIndexFirst = 0
+        }
+        const openerFirst = playing[openerIndexFirst]
+        //console.log(openerFirst)
+        //console.log(typeof(openerFirst))
+        setOpen(openerFirst)
+        
         setGameState(responseData)
         setConfig(false)
+        console.log(opener)
+        console.log(openerIndexFirst)
     }
 
 
@@ -88,6 +117,7 @@ const Jackpot = (props) => {
             dealerInputRef.current.value = newPlayerNameInputRef.current.value
         } 
         setDealer(dealerInputRef.current.value)
+
 
         let currentPlaying = []
         if(playing !== null){
@@ -130,7 +160,9 @@ const Jackpot = (props) => {
             skores: skores,
             round: gameRound,
             curSkores: curSkores,
-            seriesID: seriesID
+            seriesID: seriesID,
+            dealer: dealer,
+            opener: opener
         }
 
         const response = await fetch('http://ckr.is:5000/game/jackpot/round', {
@@ -163,7 +195,7 @@ const Jackpot = (props) => {
             // return index of current dealer into next dealer
         })
 
-        /* Working Logic for players without out */
+        /* Working Logic for next dealer without opener logic */
 
         if(nextDealer < playing.length-1){
             nextDealer += 1
@@ -174,8 +206,11 @@ const Jackpot = (props) => {
 
         setDealer(playing[nextDealer]) 
         setGameState(newGameState)
-        console.log(gameState)
-        console.log(playing)
+        //console.log(gameState)
+        //console.log(playing)
+        for(let x=0; x<inputs.length; x++){
+            inputs[x].value = ''
+        }
     }
 
 

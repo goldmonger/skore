@@ -81,6 +81,7 @@ router.post('/jackpot/round', (req, res, next) => {
         skores: updatedSkores,
         outs: out_list
     }
+    mongof.addGameRound(req.body.seriesID, newPlaying, updatedSkores, req.body.round, req.body.dealer, req.body.opener)
     res.json(newJsonObj)
     next()
 })
