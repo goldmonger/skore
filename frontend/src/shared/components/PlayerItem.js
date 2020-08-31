@@ -8,19 +8,28 @@ import Switch from 'react-switch'
 const PlayerItem = props => {
     const [selected, setSelected] = useState(false);
 
-    const handleChange = () => {
+    const handleChange = (name) => {
         if (selected === false){
             setSelected(true)
             //console.log("add " + props.id + " to selected")
-            //props.isChecked = true
+            props.isChecked('true', name)
         }
         else{
             setSelected(false)
             //console.log("remove " + props.id + " from selected")
-            //props.isChecked = false
+            props.isChecked('false', name)
         }
     };
-
+    let poison 
+    if(props.selected !== null){
+        poison = props.selected.findIndex(p => {
+            return p===props.name
+        })
+    }
+    else{
+        poison = null
+    }
+    
     return (
         <li className="player-item">
             <div className="player-item__content">
@@ -29,10 +38,12 @@ const PlayerItem = props => {
                         <h5> {props.splayed} series played </h5>
                         <h5> {props.swins} series won </h5>
                         <h5> {props.mwins} {props.mwins === 1 ? 'match won ' : 'matches won '}</h5>
+                        <p className="poisonTracker"><b>{poison + 1}</b></p>
+                        
                     </div>
                     <div className="player-item__select" id={props.id+"div"}>
                         <Switch
-                            onChange={() => handleChange(props.id)}
+                            onChange={() => handleChange(props.name)}
                             checked={selected} 
                             handleDiameter={43}
                             height={50}

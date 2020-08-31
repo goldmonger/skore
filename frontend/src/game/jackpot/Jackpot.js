@@ -4,6 +4,7 @@ import axios from 'axios'
 import './Jackpot.css'
 
 import Gamer from '../../shared/components/Gamer'
+import PLAYERS from '../../shared/LocalPlayers';
 
 const Jackpot = (props) => {
 
@@ -14,6 +15,8 @@ const Jackpot = (props) => {
     const [ playing, setPlaying ] = useState(null)
     const [ seriesID, setSeriesId ] = useState(null)
     const [ dealer, setDealer ] = useState('')
+    const [ dealerIndex, setDealerIndex ] = useState(null)
+    const [ openerIndex, setOpenerIndex ] = useState(null)
     const [ opener, setOpen ] = useState(null)
     const [ out_list, setOutList ] = useState(null)
 
@@ -48,10 +51,11 @@ const Jackpot = (props) => {
     },[playing])
 
     useEffect(() => {
-        // here i want to set the opener
-        console.log(dealer)
-        
-    },[dealer])
+        console.log("dealer index: ",dealerIndex)
+        console.log("opener index: ",openerIndex)
+    },[dealerIndex, openerIndex])
+
+
 
 
   
@@ -71,8 +75,21 @@ const Jackpot = (props) => {
         // should also set the dealer from input
         // round submit onwards we need to check the opener and then work backwards for dealer
         e.preventDefault()
-
-        const response = await fetch('http://192.168.1.16:5000/game/jackpot/init', {
+        setDealer(dealerInputRef.current.value)
+        let firstDealerIndex = playing.findIndex(p => {
+            return p===dealer
+        })
+        setDealerIndex(firstDealerIndex)
+        let firstOpenerIndex 
+        if(firstDealerIndex < playing.length - 1){
+            firstOpenerIndex = firstDealerIndex + 1
+        }
+        else{
+            firstOpenerIndex = 0
+        }
+        setOpenerIndex(firstOpenerIndex)
+        let inputs = document.getElementsByName('skore_input')
+        const response = await fetch('http://ckr.is:5000/game/jackpot/init', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -80,31 +97,19 @@ const Jackpot = (props) => {
             body: JSON.stringify({
                 playerNames: playing,
                 stakes: stakes,
-                seriesID: seriesID
+                seriesID: seriesID,
+                dealer: dealer
 
             })
         })
         const responseData = await response.json()
+        setOpen(responseData.opener)
         
-        setDealer(dealerInputRef.current.value)
-        let openerIndexFirst = playing.findIndex(p => {
-            return p === dealer
-        })
-        if(openerIndexFirst < playing.length-1){
-            openerIndexFirst += 1
-        }
-        else{
-            openerIndexFirst = 0
-        }
-        const openerFirst = playing[openerIndexFirst]
-        //console.log(openerFirst)
-        //console.log(typeof(openerFirst))
-        setOpen(openerFirst)
-        
-        setGameState(responseData)
+        setGameState(responseData.gameState)
         setConfig(false)
-        console.log(opener)
-        console.log(openerIndexFirst)
+        inputs[0].focus()
+        inputs[0].click()
+        //console.log("dealer index first ",dealerIndex)
     }
 
 
@@ -147,6 +152,9 @@ const Jackpot = (props) => {
         let newGameState = []
         let newPlaying = []
         let outs = []
+        if(out_list !== null){
+            outs = [...out_list]
+        }
 
         playing.map((player, index) => {
             skores.push(gameState[index].skore)
@@ -190,27 +198,55 @@ const Jackpot = (props) => {
         setPlaying(newPlaying)
         let currentRound = gameRound
         setGameRound(currentRound+1)
+        
+        /* WORKING LOGIC for NEXT DEALER without opener logic */
+        // Here im doing a primitive front push of the dealer 
+        // whereas i want to do a sort of 
+        // get the current opener
+        // find out who the next opener should be from new playing with the
+        // primitive front push
+        // then fix the next dealer as one behind the next opener from new playing array
+        // this should be cool ...
+        let currentOpenerIndex = playing.findIndex(p => {
+            return p === opener
+        })
+        if(currentOpenerIndex > -1){
+
+            if(currentOpenerIndex < playing.length - 1){
+                currentOpenerIndex += 1
+            }
+            else{
+                currentOpenerIndex = 0
+            }
+        }
+        else{
+            //currentOpenerIndex = 
+        }
+        
+        
+        
+        /*
         let nextDealer = playing.findIndex(p => {
             return p === dealer
             // return index of current dealer into next dealer
         })
-
-        /* Working Logic for next dealer without opener logic */
-
         if(nextDealer < playing.length-1){
             nextDealer += 1
         }
         else{
             nextDealer = (nextDealer+1) % playing.length
         }
-
-        setDealer(playing[nextDealer]) 
+        */
+         
         setGameState(newGameState)
         //console.log(gameState)
         //console.log(playing)
         for(let x=0; x<inputs.length; x++){
             inputs[x].value = ''
         }
+        inputs[0].focus()
+        inputs[0].click()
+
     }
 
 
@@ -259,6 +295,9 @@ const Jackpot = (props) => {
         const housefull = {
             color: '#666666'
         }
+        const gold = {
+            color: '#e3c43b'
+        }
         if(playing.length > 1){
             return (
                 //team block render
@@ -266,7 +305,7 @@ const Jackpot = (props) => {
                     <div className="game">
                     <h3>Jackpot {stakes}</h3>
                     <h5 style={housefull}>{seriesID}</h5>
-                    <h5>game {gameRound} dealer: {dealer}</h5>
+                    <h5>game {gameRound} dealer: <span style={gold}>{dealer}</span></h5>
                         <div className="game-container">
                             <form onSubmit={onRoundSubmitHandler}>
                                 {
@@ -321,4 +360,4 @@ const Jackpot = (props) => {
         }     
     }
 }
-export default Jackpot;
+export default Jackpot

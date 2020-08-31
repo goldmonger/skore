@@ -37,17 +37,32 @@ router.post('/jackpot/init', (req, res, next) => {
     // adds the req body into collection jackpot_series
     // and return it
     mongof.addSeries(req.body.playerNames, req.body.stakes, req.body.seriesID)
-    
-    const gameState = []
+
+    let openerIndexFirst = req.body.playerNames.findIndex(p => {
+        return p === req.body.dealer
+    })
+    if(openerIndexFirst < req.body.playerNames.length-1){
+        openerIndexFirst += 1
+    }
+    else{
+        openerIndexFirst = 0
+    }
+    const openerFirst = req.body.playerNames[openerIndexFirst]
+
+    let gameObj = {
+        gameState: [],
+        opener: openerFirst
+    }
+    //let gameState = []
     req.body.playerNames.map((playerName, index) => {
         const playerData = {
             name: playerName,
             id: 'j' + index,
             skore: 0
         }
-        gameState.push(playerData)
+        gameObj.gameState.push(playerData)
     })
-    res.json(gameState)
+    res.json(gameObj)
     next()
 })
 

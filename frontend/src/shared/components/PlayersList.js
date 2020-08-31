@@ -1,10 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './PlayersList.css'
 import PlayerItem from './PlayerItem'
 
 const PlayersList = props => {
 
-    const [selected, setSelected] = useState(false)
+    const [selected, setSelected] = useState([])
+    useEffect(() => {
+        props.submission(selected)
+    },[selected])
+
+    const toggleSelected = (e, name) => {
+        let newSelected 
+        if(e === 'true'){
+            newSelected = [...selected, name]
+        }
+        else{
+            newSelected = []
+            selected.map(p => {
+                if(p!==name){
+                    newSelected.push(p)
+                }
+            })
+        }
+        setSelected(newSelected)
+        //console.log(selected)
+    }
 
 
     if(props.player_items.length === 0){
@@ -24,7 +44,8 @@ const PlayersList = props => {
                     swins={player.swins}
                     splayed={player.splayed}
                     mwins={player.mwins}
-                    isChecked={selected}
+                    isChecked={(e, name) => toggleSelected(e, name)}
+                    selected={props.selected}
                 />
             ))}
         </ul>
