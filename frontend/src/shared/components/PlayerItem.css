@@ -27,6 +27,7 @@
     flex-direction: column;
     position: relative; 
     top: 10px; 
+    height: 50px;
 
 }
 .player-item__info > h5{
@@ -39,7 +40,7 @@
     padding: 0;
     position: relative;
     right: 30px;
-    top: 25px;
+    top: 20px;
     
 }
 
@@ -56,5 +57,5 @@
     padding: 0;
     position: relative;
     left: 200px;
-    bottom: 19px;
+    bottom: 24px;
 }

@@ -39,7 +39,6 @@ const PlayerItem = props => {
                         <h5> {props.swins} series won </h5>
                         <h5> {props.mwins} {props.mwins === 1 ? 'match won ' : 'matches won '}</h5>
                         <p className="poisonTracker"><b>{poison + 1}</b></p>
-                        
                     </div>
                     <div className="player-item__select" id={props.id+"div"}>
                         <Switch
@@ -52,7 +51,6 @@ const PlayerItem = props => {
                                 <div></div>
                             }
                             onColor="#61dafb"
-                            //onColor="#3ab4e0"
 
                         />
                     </div>
