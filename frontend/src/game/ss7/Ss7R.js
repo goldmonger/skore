@@ -18,6 +18,12 @@ const Ss7R = props => {
     const [ dealer, setDealer ] = useState(null)
 
 
+    useEffect(() => {
+        let arr_skore_input = document.getElementsByName("skore_input")
+        arr_skore_input[0].click()
+        arr_skore_input[0].focus()
+    },[])
+
     const roundSubmitHandler = async (e) => {
         e.preventDefault()
         let skores = []
@@ -56,6 +62,15 @@ const Ss7R = props => {
         let nextRound
         gameRound === 7 ? setEnd(true) : nextRound = gameRound + 1
         setGameRound(nextRound)
+        if(gameRound<7){
+            for(let x=0; x<arr_skore_input.length; x++){
+                arr_skore_input[x].value = ''
+            }
+            arr_skore_input[0].focus()
+            arr_skore_input[0].click()
+        }
+        
+        
     }
 
 
