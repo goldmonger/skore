@@ -2,12 +2,13 @@ import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios'
 
 import './Jackpot.css'
-
+import PlayersList from '../../shared/components/PlayersList'
 import Gamer from '../../shared/components/Gamer'
 import PLAYERS from '../../shared/LocalPlayers';
 
 const Jackpot = (props) => {
 
+    const [ selected, setSelected ] = useState(null)
     const [ stakes, setStakes ] = useState(50)
     const [ config, setConfig ] = useState(true)
     const [ gameRound, setGameRound ] = useState(1)
@@ -22,15 +23,11 @@ const Jackpot = (props) => {
 
 
 
-    const newPlayerNameInputRef = useRef(null)
-    const dealerInputRef = useRef(null)
-
-
     useEffect(() => {
         // retrieves the SERIES CODE for current series 
         // and sets the series id
         let salt
-        axios.get('http://ckr.is:5000/game/jackpot/code')
+        axios.get('http://192.168.1.16:5000/game/jackpot/code')
             .then(response => {
                 // REMOVE BEFORE PROD console.log
                 console.log(response.data.code)
@@ -39,26 +36,14 @@ const Jackpot = (props) => {
             })
     },[])
 
-
-
     useEffect(() => {
-        // everytime a player is added to playing array sets the focus back to input
-        if(config){
-            newPlayerNameInputRef.current.focus()
-            newPlayerNameInputRef.current.click()
-        }
-        
-    },[playing])
+        selected===null ? 
+        setDealer(null)
+        : 
+        setDealer(selected[0])
+        setPlaying(selected)
+    },[selected])
 
-    useEffect(() => {
-        console.log("dealer index: ",dealerIndex)
-        console.log("opener index: ",openerIndex)
-    },[dealerIndex, openerIndex])
-
-
-
-
-  
 
     // Dynamic Stakes input function
     const stakesInputHandler = (e) => {
@@ -75,21 +60,9 @@ const Jackpot = (props) => {
         // should also set the dealer from input
         // round submit onwards we need to check the opener and then work backwards for dealer
         e.preventDefault()
-        setDealer(dealerInputRef.current.value)
-        let firstDealerIndex = playing.findIndex(p => {
-            return p===dealer
-        })
-        setDealerIndex(firstDealerIndex)
-        let firstOpenerIndex 
-        if(firstDealerIndex < playing.length - 1){
-            firstOpenerIndex = firstDealerIndex + 1
-        }
-        else{
-            firstOpenerIndex = 0
-        }
-        setOpenerIndex(firstOpenerIndex)
-        let inputs = document.getElementsByName('skore_input')
-        const response = await fetch('http://ckr.is:5000/game/jackpot/init', {
+        setDealer(selected[0])
+        setPlaying(selected)
+        const response = await fetch('http://192.168.1.16:5000/game/jackpot/init', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -98,7 +71,7 @@ const Jackpot = (props) => {
                 playerNames: playing,
                 stakes: stakes,
                 seriesID: seriesID,
-                dealer: dealer
+                dealer: selected[0]
 
             })
         })
@@ -106,36 +79,13 @@ const Jackpot = (props) => {
         setOpen(responseData.opener)
         
         setGameState(responseData.gameState)
+
         setConfig(false)
+        let inputs = document.getElementsByName('skore_input')
         inputs[0].focus()
         inputs[0].click()
         //console.log("dealer index first ",dealerIndex)
     }
-
-
-    // Function for adding players into playing array
-    // ==============================================
-    const addPlayerHandler = (e) => {
-        e.preventDefault()
-        
-        if( dealerInputRef.current.value === '' || dealerInputRef.current.value === null){
-            dealerInputRef.current.value = newPlayerNameInputRef.current.value
-        } 
-        setDealer(dealerInputRef.current.value)
-
-
-        let currentPlaying = []
-        if(playing !== null){
-            currentPlaying = [...playing]
-        }
-        currentPlaying.push(newPlayerNameInputRef.current.value)
-        setPlaying(currentPlaying)
-        newPlayerNameInputRef.current.value = ''
-        newPlayerNameInputRef.current.click()
-        newPlayerNameInputRef.current.focus()
-    }
-    
-
 
     // Function for each ROUND
     // =======================
@@ -173,7 +123,7 @@ const Jackpot = (props) => {
             opener: opener
         }
 
-        const response = await fetch('http://ckr.is:5000/game/jackpot/round', {
+        const response = await fetch('http://192.168.1.16:5000/game/jackpot/round', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -200,30 +150,6 @@ const Jackpot = (props) => {
         setGameRound(currentRound+1)
         
         /* WORKING LOGIC for NEXT DEALER without opener logic */
-        // Here im doing a primitive front push of the dealer 
-        // whereas i want to do a sort of 
-        // get the current opener
-        // find out who the next opener should be from new playing with the
-        // primitive front push
-        // then fix the next dealer as one behind the next opener from new playing array
-        // this should be cool ...
-        let currentOpenerIndex = playing.findIndex(p => {
-            return p === opener
-        })
-        if(currentOpenerIndex > -1){
-
-            if(currentOpenerIndex < playing.length - 1){
-                currentOpenerIndex += 1
-            }
-            else{
-                currentOpenerIndex = 0
-            }
-        }
-        else{
-            //currentOpenerIndex = 
-        }
-        
-        
         
         /*
         let nextDealer = playing.findIndex(p => {
@@ -249,9 +175,9 @@ const Jackpot = (props) => {
 
     }
 
-
-    const onChangeDealerUpdateHandler = (e) => {
-        setDealer(e.target.value)
+    const testFunc = (listSelected) => {
+        console.log(listSelected)
+        setSelected(listSelected)
     }
 
     if(config){
@@ -264,30 +190,17 @@ const Jackpot = (props) => {
                 <h3>Jackpot</h3>
                 <label><b>stakes: </b></label><label style={style}><b>{stakes}</b></label>
                 <input type="text" name="stakes" className="game-input1" id="stakes_input" value={stakes} onChange={stakesInputHandler} />
+                <h5 className="instructions" >Add players clockwise</h5>
+                <h5 className="instructions" >Dealer as player 1</h5>
                 <br />
-                
-        
                 <div className="new_game_form_div">
-                    <label><b>add player: </b></label><input ref={newPlayerNameInputRef} type='text' className="game-input1" autocapitalize="off"  ></input>
-
-                    <label><b>dealer: </b></label><input ref={dealerInputRef} type='text' className="game-input1" autocapitalize="off" onChange={onChangeDealerUpdateHandler} ></input>
-
-                    <button className="game-button" onClick={addPlayerHandler}>ADD</button>
-                    <button className="game-button" onClick={newGameGenerateHandler}>START</button>
+                    <PlayersList 
+                        player_items={PLAYERS} 
+                        submission={(listSelected) => testFunc(listSelected)}
+                        selected={selected}
+                    />
+                    <button className="game-button" onClick={(e) => newGameGenerateHandler(e)}>START</button>
                 </div>
-               
-                {playing === null ?
-                    null 
-                    :
-                    
-                    playing.map((p, index) => {
-                        return (
-                            <span style={style}>{p} </span>
-                        )
-                    })
-
-                }
-                 
             </div> 
         )
     }

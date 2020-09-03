@@ -9,6 +9,9 @@ h5{
 .game-container{
     color: #666666;
 }
+.instructions {
+    color: azure;
+}
 
 .game_flag_button{
     width: 70px;
