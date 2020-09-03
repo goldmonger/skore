@@ -41,7 +41,7 @@ const Ss7 = () => {
 
     const beginSs7 = async (e) => {
         e.preventDefault()
-        await axios.post('http://192.168.1.16:5000/game/ss7/init', {
+        await axios.post('http://ckr.is:5000/game/ss7/init', {
             selected: selected,
             seriesID: seriesID,
             stakes: stakes

@@ -33,7 +33,7 @@ const Ss7R = props => {
             skores.push(player.skore)
             playerIds.push(player.id)
         })
-        await axios.post('http://192.168.1.16:5000/game/ss7/round', {
+        await axios.post('http://ckr.is:5000/game/ss7/round', {
             playing: playing,
             seriesID: seriesID,
             gameRound: gameRound,

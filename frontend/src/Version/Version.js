@@ -3,7 +3,7 @@ import './Version.css'
 
 const Version = () => {
     return (
-        <p className="version"><i>v0.3</i></p>
+        <p className="version"><i>v0.3.1</i></p>
     )
 }
 
