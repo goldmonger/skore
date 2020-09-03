@@ -15,14 +15,9 @@ const Ss7R = props => {
     const [ gameState, setGameState ] = useState(props.gameState)
     const [ seriesID, setSeriesId ] = useState(props.seriesID)
     const [ playing, setPlaying ] = useState(props.selected)
-    const [ dealer, setDealer ] = useState(null)
+    const [ dealer, setDealer ] = useState(props.selected[0])
 
 
-    useEffect(() => {
-        let arr_skore_input = document.getElementsByName("skore_input")
-        arr_skore_input[0].click()
-        arr_skore_input[0].focus()
-    },[])
 
     const roundSubmitHandler = async (e) => {
         e.preventDefault()
@@ -50,10 +45,23 @@ const Ss7R = props => {
             
         })
         .then((response) => {
-            console.log(response)
+            //console.log(response)
             setGameState(response.data.gameState)
-            console.log(gameState)
-            console.log(response.data.gameState)
+            //console.log(gameState)
+            //console.log(response.data.gameState)
+            let leastSkore = response.data.skores[0]
+            for(let x=0; x<response.data.skores.length; x++){
+                if(response.data.skores[x] < leastSkore){
+                    leastSkore = response.data.skores[x]
+                }
+            }
+            setLeastSkore(leastSkore)
+            let leastIndex = response.data.skores.findIndex(skore => {
+                return skore===leastSkore
+            })
+            setLeastPlayer(response.data.playerNames[leastIndex])
+
+
           })
           .catch((error) => {
               console.log(error)
@@ -62,6 +70,9 @@ const Ss7R = props => {
         let nextRound
         gameRound === 7 ? setEnd(true) : nextRound = gameRound + 1
         setGameRound(nextRound)
+        
+        /*
+        // AUTO FOCUS AND CLICK THE BOX
         if(gameRound<7){
             for(let x=0; x<arr_skore_input.length; x++){
                 arr_skore_input[x].value = ''
@@ -69,14 +80,31 @@ const Ss7R = props => {
             arr_skore_input[0].focus()
             arr_skore_input[0].click()
         }
-        
+        */
+        let nextDealer = playing.findIndex(p => {
+            return p === dealer
+            // return index of current dealer into next dealer
+        })
+        if(nextDealer < playing.length-1){
+            nextDealer += 1
+        }
+        else{
+            nextDealer = (nextDealer+1) % playing.length
+        }
+        setDealer(playing[nextDealer])
+        console.log(least_player)
+        console.log(least_skore)
         
     }
 
+    const gold = {
+        color: '#e3c43b'
+    }
 
    
     return (
         <div className="game-container">
+            <h5>game {gameRound} dealer: <span style={gold}>{dealer}</span></h5>
         {
             end ?
                 <div className="result">
@@ -85,9 +113,9 @@ const Ss7R = props => {
                 </div>
              :
 
-            
             <form onSubmit={roundSubmitHandler}>
-                <h4 className="round_num">game {gameRound}</h4>
+                {//<h4 className="round_num">game {gameRound}</h4>
+                }
                 {
                     props.selected.map((playerName, index) => {
                         return(

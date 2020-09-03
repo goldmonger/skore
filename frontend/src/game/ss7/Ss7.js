@@ -67,6 +67,7 @@ const Ss7 = () => {
                     <label><b>stakes: </b></label><label style={style}><b>{stakes}</b></label>
                     <input type="text" name="stakes" className="game-input1" id="stakes_input" value={stakes} onChange={stakesInputHandler} />
                     <h5 className="instructions" >Add players clockwise</h5>
+                    <h5 className="instructions" >Dealer as player 1</h5>
                     <form onSubmit={(e) => beginSs7(e)}>
                     <PlayersList 
                         player_items={PLAYERS} 
