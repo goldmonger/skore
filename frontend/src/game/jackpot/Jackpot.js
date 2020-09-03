@@ -27,7 +27,7 @@ const Jackpot = (props) => {
         // retrieves the SERIES CODE for current series 
         // and sets the series id
         let salt
-        axios.get('http://ckr.is/game/jackpot/code')
+        axios.get('http://ckr.is:5000/game/jackpot/code')
             .then(response => {
                 // REMOVE BEFORE PROD console.log
                 console.log(response.data.code)
