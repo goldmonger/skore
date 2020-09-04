@@ -168,14 +168,14 @@ const Jackpot = (props) => {
         //console.log(gameState)
         //console.log(playing)
 
-        /*
-        // AUTO FOCUS AND CLICK
+        
+        // CLEAR FIELDS AND AUTO FOCUS AND CLICK
         for(let x=0; x<inputs.length; x++){
             inputs[x].value = ''
         }
-        inputs[0].focus()
-        inputs[0].click()
-        */
+        //inputs[0].focus()
+        //inputs[0].click()
+        
 
     }
 
