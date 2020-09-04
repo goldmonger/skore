@@ -151,7 +151,7 @@ const Jackpot = (props) => {
         
         /* WORKING LOGIC for NEXT DEALER without opener logic */
         
-        /*
+        
         let nextDealer = playing.findIndex(p => {
             return p === dealer
             // return index of current dealer into next dealer
@@ -162,7 +162,7 @@ const Jackpot = (props) => {
         else{
             nextDealer = (nextDealer+1) % playing.length
         }
-        */
+        setDealer(newPlaying[nextDealer])
          
         setGameState(newGameState)
         //console.log(gameState)
