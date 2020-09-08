@@ -1,2 +1,1 @@
 # skore
-Baby kris :*
