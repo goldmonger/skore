@@ -9,5 +9,7 @@ or of any individuals who may bear resemblence to any of the assets used in the 
 the company poisoncandy and its designer and developer do not intend to pursue legal reaction to legal action or fulfill any legal obligations.
 
 Thank you facebook
+
 Thank you team react
+
 Long Live Mark
